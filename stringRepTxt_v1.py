@@ -11,7 +11,14 @@ import re
 
 
 def replace(infile, outfile):
+	# Read the original file
     content = read_file(infile)
+    # Split the content into paragraphs
+    paragraphs = content.split('\n\
+\n\
+')
+    
+    # Dictionary for direct translations
     translateDict = {
             'Market Type Indicator ': '',
             'VANCOUVER DOWNTOWN ': '温哥华市中心',
@@ -67,12 +74,26 @@ def replace(infile, outfile):
             '： ': '：'
             }
 
-    for EngTxt, ChnTxt in translateDict.items():
-        content = content.replace(EngTxt,ChnTxt)
-        content = re.sub(r'Homes are selling on average (\d+)% above list price', r'成交价比挂牌价高\1%。', content)
-        content = re.sub(r'Homes are selling on average (\d+)% below list price', r'成交价比挂牌价低\1%。', content)
-        content = re.sub(r'(\d+(\.\d)?) in (\d+) homes selling rate', r'\3套中成交\1套房', content)
-    rewrite_file(outfile, content)
+    # Prepare the output content
+    output_content = ''
+
+    for paragraph in paragraphs:
+        # Translate the paragraph
+        translated_paragraph = paragraph
+        for EngTxt, ChnTxt in translateDict.items():
+            translated_paragraph = translated_paragraph.replace(EngTxt, ChnTxt)
+            translated_paragraph = re.sub(r'Homes are selling on average (\d+)% above list price', r'成交价比挂牌价高\1%。', translated_paragraph)
+            translated_paragraph = re.sub(r'Homes are selling on average (\d+)% below list price', r'成交价比挂牌价低\1%。', translated_paragraph)
+            translated_paragraph = re.sub(r'(\d+(\.\d)?) in (\d+) homes selling rate', r'\3套中成交\1套房', translated_paragraph)
+        
+        # Combine the original and translated paragraphs
+        output_content += paragraph + '\n\
+' + translated_paragraph + '\n\
+\n\
+'
+    
+    # Write the result to the output file
+    rewrite_file(outfile, output_content)
 
 # 读文件内容
 def read_file(infile):
@@ -90,7 +111,7 @@ def rewrite_file(outfile, data):
         f.close()
         print ("rewrite file done!")  
 
-# 替换操作(将test.txt文件中的'Hello World!'替换为'Hello Qt!')
+# 替换操作
 replace(r'2024 10 October.txt', '2024 10 October output.txt')
 
 
