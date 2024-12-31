@@ -7,10 +7,10 @@
 """ 
 import re
 from docx import Document
+from docx.shared import Pt
+from docx.enum.text import WD_LINE_SPACING
 
-# 传入文件(file),将旧内容(old_content)替换为新内容(new_content)
-
-
+########### replace function 传入文件(file),将旧内容(old_content)替换为新内容(new_content)
 def replace(infile, outfile):
 	# Read the original file
     content = read_file(infile)
@@ -113,6 +113,7 @@ def rewrite_file(outfile, data):
         print ("rewrite file done!")  
 
 
+########### txt file to word function #######
 def txt_to_word(input_txt, output_docx):
     # Create a new Word document
     document = Document()
@@ -124,12 +125,20 @@ def txt_to_word(input_txt, output_docx):
             # Add each line as a paragraph to the Word document
             document.add_paragraph(line.strip())
 
+    for paragraph in document.paragraphs:
+        # Access the format of the paragraph
+        paragraph_format = paragraph.paragraph_format
+        
+        paragraph_format.line_spacing_rule = WD_LINE_SPACING.SINGLE
+        # Set space after paragraphs to 0 points
+        paragraph_format.space_after = Pt(0)
+
     # Save the document
     document.save(output_docx)
     print(f"Content from {input_txt} has been copied to {output_docx}.")
 
-# 替换操作
+# call function to replace/translate
 replace(r'2024 10 October.txt', '2024 10 October output.txt')
 
-# Use the function to copy contents
+# Use the function to copy contents into docx
 txt_to_word('2024 10 October output.txt', '2024 10 October output.docx')
