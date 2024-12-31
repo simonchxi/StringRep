@@ -6,6 +6,7 @@
 
 """ 
 import re
+from docx import Document
 
 # 传入文件(file),将旧内容(old_content)替换为新内容(new_content)
 
@@ -111,7 +112,24 @@ def rewrite_file(outfile, data):
         f.close()
         print ("rewrite file done!")  
 
+
+def txt_to_word(input_txt, output_docx):
+    # Create a new Word document
+    document = Document()
+    
+    # Open and read the text file
+    with open(input_txt, 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+        for line in lines:
+            # Add each line as a paragraph to the Word document
+            document.add_paragraph(line.strip())
+
+    # Save the document
+    document.save(output_docx)
+    print(f"Content from {input_txt} has been copied to {output_docx}.")
+
 # 替换操作
 replace(r'2024 10 October.txt', '2024 10 October output.txt')
 
-
+# Use the function to copy contents
+txt_to_word('2024 10 October output.txt', '2024 10 October output.docx')
