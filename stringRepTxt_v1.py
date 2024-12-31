@@ -17,7 +17,9 @@ def replace(infile, outfile):
             'VANCOUVER DOWNTOWN ': '温哥华市中心',
             'DOWNTOWN ': '市中心', 
             'VANCOUVER WESTSIDE ': '温西',
+            'WESTSIDE ': '温西',
             'VANCOUVER EASTSIDE ': '温东',
+            'EASTSIDE ': '温东',
             'NORTH VANCOUVER ': '北温',
             'WEST VANCOUVER ': '西温哥华',
             'RICHMOND ': '列治文',
@@ -89,6 +91,6 @@ def rewrite_file(outfile, data):
         print ("rewrite file done!")  
 
 # 替换操作(将test.txt文件中的'Hello World!'替换为'Hello Qt!')
-replace(r'2022 04 April input.txt', '2022 04 April output1.txt')
+replace(r'2024 10 October.txt', '2024 10 October output.txt')
 
 
